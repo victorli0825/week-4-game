@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+
+<html lang="en-us">
+
+<head>
+	<meta charset="utf-8">
+	<title>Poker Collector Game</title>
+	<link rel="stylesheet" type="text/css" href="assets/css/style.css">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+</head>
+
+<body background="assets/images/intersection.png">
+
+	<header><h1>PokerCollector!</h1></header>
+
+	<div class="container">
+		<section id="main-content">
+			<p>
+				You will be given a random number at the start of the game.
+					<br>
+					<br>
+				There are four pokers below. By clicking on a poker you will add a specific amount of points to your total score.
+				    <br>
+				    <br>
+			    You win the game by matching your total score to random number, you lose the game if your total score goes above the random number.
+			        <br>
+			        <br>
+			    The value of each poker is hidden from you until you click on it.
+			        <br>
+			        <br>
+			    Each time when the game starts, the game will change the values of each poker.</p>
+		</section>
+		<section id="number">
+			<div><h2><span id="random-number">39</span></h2></div>
+			<div class="wins-loses">
+				<div><p><span id="user-text"></span></p></div>
+				<div><p>Wins: <span id="user-wins">0</span></p></div>
+				<div><p>Loses: <span id="user-loses">0</span></p></div>
+			</div>
+		</section>
+		<section id="images">
+			<!-- <ul style="list-style-type: none">
+				<li><img class="poker-images" src="assets/images/spade.jpeg" width="80" height="80"></li>
+				<li><img class="poker-images" src="assets/images/heart.png" width="80" height="80"></li>
+				<li><img class="poker-images" src="assets/images/club.png" width="80" height="80"></li>
+				<li><img class="poker-images" src="assets/images/diamond.png" width="80" height="80"></li>
+			</ul> -->
+		</section>
+		<section id="your-score">
+			<div><p><span id="total-score">Your total score is: </span></p></div>
+			<div><p><span id="user-score">0</span></p></div>
+		</section>		
+	</div>
+
+
+	<script type="text/javascript">
+
+		var Wins = 0;
+		var Loses = 0;
+
+		var userWins = document.getElementById("user-wins");
+		var userLoses = document.getElementById("user-loses");
+		var userScore = document.getElementById("user-score");
+
+		var counter = 0;
+
+		var computerRandom = Math.floor(Math.random() * 103) + 18;
+
+		var imgArray = [
+		"assets/images/spade.jpeg",
+		"assets/images/heart.png",
+		"assets/images/club.png",
+		"assets/images/diamond.png",
+		];
+
+		var newStart = null;
+
+		reset = function() {
+			counter = 0;
+			userScore.innerHTML = counter;
+			computerRandom = Math.floor(Math.random() * 103) + 18;
+			document.getElementById("random-number").innerHTML = computerRandom;
+			$("#images").html("");
+			for (var i = 0; i < 4; i++) {
+			var imagePoker = $("<img width='80' height='80'>");
+			imagePoker.addClass("poker-images");
+			imagePoker.attr("src", imgArray[i]);
+			imagePoker.attr("data-pokervalue", Math.floor(Math.random() * 12) + 1);
+			$("#images").append(imagePoker);
+			$(".poker-images").on("click", newStart);
+		    }
+	    }
+
+	    newStart = function() {
+			console.log(this);
+			var pokerValue = parseInt($(this).attr("data-pokervalue"));
+
+			console.log(counter, typeof counter)
+			counter += pokerValue;
+			console.log(counter, pokerValue, typeof pokerValue);
+			userScore.innerHTML = counter;
+			document.getElementById("user-text").innerHTML = "";
+
+			if (counter === computerRandom) {
+				document.getElementById("user-text").innerHTML += "You win!";
+				Wins++;
+				userWins.innerHTML = Wins;
+				reset();
+			}
+
+			else if (counter > computerRandom) {
+				document.getElementById("user-text").innerHTML += "You lose!";
+				Loses++;
+				userLoses.innerHTML = Loses;
+				reset();
+			}
+		}
+
+		$("#random-number").text(computerRandom);
+
+		for (var i = 0; i < 4; i++) {
+			var imagePoker = $("<img width='80' height='80'>");
+			imagePoker.addClass("poker-images");
+			imagePoker.attr("src", imgArray[i]);
+			imagePoker.attr("data-pokervalue", Math.floor(Math.random() * 12) + 1);
+			$("#images").append(imagePoker);
+		}
+
+		$(".poker-images").on("click", newStart);
+
+
+
+	</script>
+
+</body>
+
+</html>
